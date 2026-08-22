@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นโยบายความเป็นส่วนตัว — โต๊ะแป้ง (Tohpang)</title>
+<meta name="description" content="นโยบายความเป็นส่วนตัวของแอปโต๊ะแป้ง — เก็บอะไร ไม่เก็บอะไร และสั่งลบได้อย่างไร">
+<meta name="color-scheme" content="light dark">
+<style>
+/* สีทุกค่ายกมาจาก theme/tokens.ts ของแอปตรงๆ ไม่ได้เลือกใหม่
+   เพื่อให้หน้านี้ดูเป็นของแอปเดียวกัน ไม่ใช่เอกสารที่ใครก็เขียนได้ */
+:root {
+  --canvas: #FDF6F7;
+  --slot: #FFFFFF;
+  --liner: #F0DCE1;
+  --ink: #2A1A20;
+  --muted: #7E5C66;
+  --accent-text: #C42A4C;
+  --accent-soft: #FCE4E9;
+  --zone-tint: #F6E2E7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #1A1015;
+    --slot: #26181E;
+    --liner: #3F2831;
+    --ink: #F9EFF1;
+    --muted: #BC9AA4;
+    --accent-text: #FF9CB1;
+    --accent-soft: #4A2C39;
+    --zone-tint: #2A1A22;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* ฟอนต์ไทยของเครื่องเท่านั้น — ไม่โหลดจาก CDN เพราะหน้านี้ต้องอ่านได้แม้เน็ตแย่
+     และการโหลดฟอนต์จากภายนอกคือการบอก third party ว่าใครเปิดหน้านโยบายนี้ */
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans Thai", "Sarabun",
+               "Leelawadee UI", "Segoe UI", Roboto, sans-serif;
+  /* 1.85 — ภาษาไทยมีสระบนและล่าง บรรทัดชิดกว่านี้แล้วสระซ้อนกัน
+     (กฎเดียวกับที่แอปบังคับไว้ที่ 1.6 ขั้นต่ำ ในเอกสารยาวใช้มากกว่านั้นอีก) */
+  line-height: 1.85;
+  font-size: 17px;
+  color: var(--ink);
+  background: var(--canvas);
+  -webkit-text-size-adjust: 100%;
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 5rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+h2 {
+  font-size: 1.3rem;
+  line-height: 1.55;
+  margin: 3rem 0 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--liner);
+}
+h3 {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  margin: 2rem 0 0.5rem;
+}
+h2:first-of-type { border-top: none; padding-top: 0; }
+
+p, li { margin: 0.75rem 0; }
+ul { padding-inline-start: 1.4rem; }
+
+.version {
+  color: var(--accent-text);
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+.lede { color: var(--muted); }
+
+/* ตารางบนมือถือ: ให้เลื่อนในกล่องของตัวเอง ห้ามดันทั้งหน้าให้เลื่อนซ้ายขวา */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.25rem 0;
+  border: 1px solid var(--liner);
+  border-radius: 12px;
+}
+table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+th, td {
+  text-align: start;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--liner);
+  vertical-align: top;
+}
+thead th { background: var(--zone-tint); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* กล่องข้อความสำคัญ — รูปทรงเดียวกับบล็อก Note ในแอป */
+.note {
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin: 1.5rem 0;
+}
+.note p { margin: 0.4rem 0; }
+.note p:first-child { margin-top: 0; }
+.note p:last-child { margin-bottom: 0; }
+
+.card {
+  background: var(--slot);
+  border: 1px solid var(--liner);
+  border-radius: 12px;
+  padding: 0.25rem 1.1rem;
+  margin: 1.5rem 0;
+}
+
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--liner);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+a { color: var(--accent-text); }
+strong { font-weight: 600; }
+code { font-size: 0.95em; }
+
+@media (max-width: 30rem) {
+  body { font-size: 16px; }
+  main { padding: 1.5rem 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<h1>นโยบายความเป็นส่วนตัว — โต๊ะแป้ง (Tohpang)</h1>
+<p class="version">ฉบับ th-1.0 · มีผลตั้งแต่ 22 สิงหาคม 2026</p>
+
+<p class="lede">
+โต๊ะแป้งเป็นแอปช่วยจำว่าเครื่องสำอางที่คุณมีอยู่ใกล้หมดอายุหรือยัง
+เอกสารนี้บอกว่าเราเก็บอะไร ไม่เก็บอะไร และคุณสั่งให้ลบได้อย่างไร
+</p>
+
+<h2>สรุปให้อ่านใน 30 วินาที</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>คำถาม</th><th>คำตอบ</th></tr></thead>
+<tbody>
+<tr><td>ข้อมูลของฉันอยู่ที่ไหน</td><td><strong>อยู่ในเครื่องของคุณ</strong> เป็นหลัก</td></tr>
+<tr><td>รูปที่ถ่ายถูกส่งขึ้นเซิร์ฟเวอร์ไหม</td><td><strong>ไม่เลย ไม่ว่ากรณีใด</strong></td></tr>
+<tr><td>ต้องสมัครสมาชิกไหม</td><td><strong>ไม่ต้อง</strong> ใช้ได้ทันทีโดยไม่ต้องกรอกอะไร</td></tr>
+<tr><td>มีโฆษณาไหม</td><td><strong>ไม่มี</strong> และเราไม่มี SDK โฆษณาในแอปเลยสักตัว</td></tr>
+<tr><td>ติดตามพฤติกรรมไหม</td><td>เก็บสถิติเฉพาะเมื่อคุณกดยินยอม · รายงานแอปขัดข้องส่งแค่โค้ดที่พัง ไม่มีข้อมูลส่วนตัว</td></tr>
+<tr><td>ขายข้อมูลไหม</td><td><strong>ไม่ขาย</strong> ไม่ว่ากับใคร</td></tr>
+<tr><td>ลบข้อมูลทั้งหมดได้ไหม</td><td>ได้ ในแอป กดปุ่มเดียว</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>1. ใครเป็นผู้เก็บข้อมูล</h2>
+<p>ผู้พัฒนาแอปโต๊ะแป้ง ติดต่อได้ที่ <strong><a href="mailto:lovepong@gmail.com">lovepong@gmail.com</a></strong></p>
+
+<h2>2. ข้อมูลที่อยู่ในเครื่องคุณเท่านั้น — เราไม่เคยเห็น</h2>
+<p>สิ่งเหล่านี้ถูกเก็บในหน่วยความจำของโทรศัพท์คุณ และ<strong>ไม่เคยถูกส่งออกไปที่ใดเลย</strong>:</p>
+<ul>
+  <li><strong>รูปสินค้าทุกใบที่คุณถ่าย</strong> และรูปในไดอารี่</li>
+  <li>การตั้งเตือนวันหมดอายุ</li>
+  <li>การตั้งค่าต่างๆ ในแอป</li>
+</ul>
+<div class="note">
+  <p><strong>สิ่งที่ตามมาซึ่งคุณควรรู้:</strong> เพราะรูปไม่เคยถูกสำรองไว้ที่ไหน
+  <strong>ถ้าคุณลบแอปหรือเปลี่ยนเครื่อง รูปทั้งหมดจะหายถาวร</strong> แม้จะผูกบัญชี Google ไว้แล้วก็ตาม</p>
+  <p>เราเลือกแบบนี้เพราะรูปในบ้านของคุณไม่ควรมานอนอยู่บนเซิร์ฟเวอร์ของใคร</p>
+</div>
+
+<h2>3. ข้อมูลที่ขึ้นเซิร์ฟเวอร์ — เฉพาะเมื่อคุณผูกบัญชี</h2>
+<p>ถ้าคุณ<strong>ไม่ผูกบัญชี</strong> ไม่มีข้อมูลของคุณอยู่บนเซิร์ฟเวอร์เลย นอกจากรหัสผู้ใช้แบบนิรนามที่ระบบสร้างให้อัตโนมัติ</p>
+<p>เมื่อคุณกดผูกบัญชี Google เพื่อให้ย้ายเครื่องได้ เราจะเก็บ:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ข้อมูล</th><th>ทำไมต้องเก็บ</th><th>เก็บนานแค่ไหน</th></tr></thead>
+<tbody>
+<tr><td>รายการของในลิ้นชัก (ยี่ห้อ ชื่อ ขนาด ราคา วันซื้อ/เปิด/หมดอายุ โน้ต)</td><td>เพื่อให้ข้อมูลกลับมาเมื่อคุณเปลี่ยนเครื่อง</td><td>จนกว่าคุณจะลบ</td></tr>
+<tr><td>ประวัติการใช้ของแต่ละชิ้น (ซื้อ / เปิด / ใช้หมด / ทิ้ง)</td><td>เพื่อคำนวณว่าของชิ้นไหนใกล้หมด</td><td>จนกว่าคุณจะลบ</td></tr>
+<tr><td><strong>ของที่อยากได้</strong> (ยี่ห้อ ชื่อสินค้า หมวด)</td><td>เพื่อให้รายการตามไปเครื่องใหม่ด้วย</td><td>จนกว่าคุณจะลบ</td></tr>
+<tr><td>อีเมลและรหัสบัญชี Google</td><td>เพื่อยืนยันว่าเป็นคุณตอนเข้าจากเครื่องใหม่</td><td>จนกว่าคุณจะลบบัญชี</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>เราไม่เก็บ</strong>: เบอร์โทร ที่อยู่ รายชื่อผู้ติดต่อ ตำแหน่งที่ตั้ง รายการแอปอื่นในเครื่อง</p>
+
+<h2>4. เมื่อคุณสแกนบาร์โค้ดและให้ AI อ่านฉลาก</h2>
+<p>เมื่อคุณสแกนบาร์โค้ดแล้วระบบยังไม่รู้จักสินค้าชิ้นนั้น เราจะส่ง <strong>รูปฉลากที่คุณเพิ่งถ่าย
+พร้อมเลขบาร์โค้ด</strong> ไปให้ผู้ให้บริการ AI อ่านข้อความบนฉลากกลับมา</p>
+<ul>
+  <li>รูปถูกส่งไป<strong>เพื่ออ่านข้อความเท่านั้น</strong> และไม่ถูกเก็บไว้ที่เรา</li>
+  <li>ผู้ให้บริการที่ใช้: <strong>Google (Gemini)</strong></li>
+  <li>สิ่งที่เก็บไว้หลังจากนั้นคือ <strong>ชื่อสินค้า ยี่ห้อ หมวด ที่ผูกกับเลขบาร์โค้ด</strong> ลงในแคตตาล็อกกลาง
+      เพื่อให้คนถัดไปที่สแกนสินค้าตัวเดียวกันไม่ต้องเสียเวลาซ้ำ —
+      <strong>ข้อมูลในแคตตาล็อกนี้ไม่ได้ผูกกับตัวคุณ</strong> และไม่มีใครรู้ว่าใครเป็นคนสแกน</li>
+  <li><strong>ถ้าสแกนบาร์โค้ดไม่ได้ เราจะไม่ส่งรูปไปไหนเลย</strong> แอปจะอ่านข้อความในเครื่องแทน</li>
+</ul>
+
+<h2>5. ข้อมูลการใช้งานที่ขอความยินยอมแยกต่างหาก</h2>
+<p>เราจะเก็บสถิติการใช้งานก็ต่อเมื่อ<strong>คุณกดยินยอมเท่านั้น</strong> และคุณถอนได้ทุกเมื่อในหน้าตั้งค่า</p>
+<ul>
+  <li><strong>สิ่งที่เก็บ</strong>: ประเภทเหตุการณ์ (เช่น "ใช้ของหมดหนึ่งชิ้น") หมวดสินค้า และเวลา</li>
+  <li><strong>สิ่งที่ไม่เก็บเด็ดขาด</strong>: ชื่อสินค้าเต็ม ราคาที่คุณกรอก โน้ตส่วนตัว หรือที่อยู่ของรูป</li>
+  <li><strong>เก็บไว้ 12 เดือน</strong> แล้วลบอัตโนมัติ</li>
+</ul>
+<p>ใช้เพื่อคำนวณค่ากลางว่า "ของหมวดนี้คนทั่วไปใช้หมดในกี่วัน" เท่านั้น</p>
+
+<h2>6. ลิงก์ซื้อสินค้า (Affiliate)</h2>
+<p>แอปนี้<strong>ไม่มีโฆษณา</strong> แต่มีรายได้จากลิงก์ซื้อสินค้า — เมื่อคุณกดลิงก์แล้วซื้อของ
+เราอาจได้ส่วนแบ่งจากร้านค้าโดย<strong>คุณไม่ต้องจ่ายเพิ่มแม้แต่บาทเดียว</strong></p>
+<ul>
+  <li>การ์ดที่เป็นลิงก์แบบนี้จะมีป้าย <strong>"แนะนำสินค้า"</strong> กำกับเสมอ</li>
+  <li>เมื่อคุณกด เราบันทึกว่ามีการกดลิงก์ไหน จากหน้าไหน เพื่อกระทบยอดกับร้านค้า</li>
+  <li><strong>เราไม่ส่งข้อมูลส่วนตัวของคุณไปให้ร้านค้า</strong></li>
+</ul>
+
+<h2>7. สิทธิของคุณตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>สิทธิ</th><th>ใช้ยังไง</th></tr></thead>
+<tbody>
+<tr><td>ขอดูข้อมูลที่เรามี</td><td>อีเมลมาที่ <a href="mailto:lovepong@gmail.com">lovepong@gmail.com</a></td></tr>
+<tr><td><strong>ลบข้อมูลทั้งหมด</strong></td><td>ในแอป → ตั้งค่า → ข้อมูลของฉัน → ลบบัญชี <strong>ลบทันทีทั้งในเครื่องและบนเซิร์ฟเวอร์</strong></td></tr>
+<tr><td>ถอนความยินยอมเรื่องสถิติ</td><td>ในแอป → ตั้งค่า → ความยินยอม</td></tr>
+<tr><td>ร้องเรียน</td><td>สำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล (สคส.)</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>8. ผู้ให้บริการที่เราใช้</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ใคร</th><th>ทำอะไรให้เรา</th></tr></thead>
+<tbody>
+<tr><td><strong>Supabase</strong></td><td>เก็บข้อมูลที่ sync และยืนยันตัวตน (เซิร์ฟเวอร์อยู่สิงคโปร์)</td></tr>
+<tr><td><strong>Google (Gemini)</strong></td><td>อ่านข้อความจากรูปฉลาก เฉพาะตอนสแกนบาร์โค้ดได้</td></tr>
+<tr><td><strong>Google (Sign-in)</strong></td><td>ยืนยันตัวตนตอนผูกบัญชี</td></tr>
+<tr><td><strong>Open Beauty Facts</strong></td><td>ฐานข้อมูลสินค้าสาธารณะ ใช้ค้นด้วยเลขบาร์โค้ด</td></tr>
+<tr><td><strong>Sentry</strong></td><td>รับรายงานเมื่อแอปขัดข้อง (เซิร์ฟเวอร์อยู่<strong>เยอรมนี</strong>)</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>รายงานเมื่อแอปขัดข้อง — ส่งอะไรบ้าง</h3>
+<p>เมื่อแอปขัดข้อง เราจะได้รับ<strong>รายงานทางเทคนิคว่าโค้ดบรรทัดไหนที่พัง</strong> พร้อมรุ่นเครื่องและเวอร์ชันแอป
+เท่านั้น — <strong>ปิดการเก็บส่วนที่เหลือไว้ทั้งหมดตั้งแต่ต้น</strong>:</p>
+<div class="card">
+<ul>
+  <li>ไม่ส่งภาพหน้าจอ ตอนแอปขัดข้อง</li>
+  <li>ไม่ส่งชื่อสินค้า ราคา หรือโน้ตของคุณ</li>
+  <li>ไม่ส่ง IP ของคุณ</li>
+  <li>ไม่ส่งข้อความที่แอปเขียนไว้ใน log ของตัวเอง</li>
+</ul>
+</div>
+<p>ข้อมูลที่ sync ถูกเก็บที่<strong>สิงคโปร์</strong> และรายงานแอปขัดข้องถูกเก็บที่<strong>เยอรมนี</strong> —
+ทั้งสองอยู่นอกประเทศไทย ซึ่งคุณยินยอมเมื่อเลือกผูกบัญชีและใช้แอป</p>
+
+<h2>9. เด็กและเยาวชน</h2>
+<p>แอปนี้ไม่ได้ออกแบบสำหรับผู้ที่อายุต่ำกว่า 13 ปี และเราไม่ได้ตั้งใจเก็บข้อมูลของเด็ก</p>
+
+<h2>10. เมื่อนโยบายนี้เปลี่ยน</h2>
+<p>ทุกครั้งที่แก้เนื้อหาที่มีผลกับสิทธิของคุณ เราจะเปลี่ยนเลขฉบับและแจ้งในแอปก่อนขอความยินยอมใหม่
+ประวัติการแก้ทุกครั้งดูได้ที่ประวัติของไฟล์นี้บน GitHub</p>
+
+<footer>
+  <p><strong>ฉบับปัจจุบัน: th-1.0</strong> · ปรับปรุงล่าสุด 22 สิงหาคม 2026</p>
+  <p>โต๊ะแป้ง (Tohpang) · ติดต่อ <a href="mailto:lovepong@gmail.com">lovepong@gmail.com</a></p>
+</footer>
+
+</main>
+</body>
+</html>
