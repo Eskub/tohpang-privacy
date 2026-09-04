@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ขอลบบัญชีและข้อมูล — โต๊ะแป้ง (Tohpang)</title>
+<meta name="description" content="วิธีขอลบบัญชีและข้อมูลของแอปโต๊ะแป้ง — ลบเองในแอปได้ทันที หรือส่งอีเมลมาถ้าเข้าแอปไม่ได้แล้ว">
+<meta name="color-scheme" content="light dark">
+<style>
+/* สีทุกค่ายกมาจาก theme/tokens.ts ของแอปตรงๆ ชุดเดียวกับหน้านโยบายความเป็นส่วนตัว
+   เพื่อให้สองหน้านี้ดูเป็นของแอปเดียวกัน ไม่ใช่เอกสารที่ใครก็เขียนได้ */
+:root {
+  --canvas: #FDF6F7;
+  --slot: #FFFFFF;
+  --liner: #F0DCE1;
+  --ink: #2A1A20;
+  --muted: #7E5C66;
+  --accent-text: #C42A4C;
+  --accent-soft: #FCE4E9;
+  --zone-tint: #F6E2E7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #1A1015;
+    --slot: #26181E;
+    --liner: #3F2831;
+    --ink: #F9EFF1;
+    --muted: #BC9AA4;
+    --accent-text: #FF9CB1;
+    --accent-soft: #4A2C39;
+    --zone-tint: #2A1A22;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* ฟอนต์ไทยของเครื่องเท่านั้น — ไม่โหลดจาก CDN เพราะหน้านี้ต้องอ่านได้แม้เน็ตแย่
+     และการโหลดฟอนต์จากภายนอกคือการบอก third party ว่าใครเปิดหน้านี้ */
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans Thai", "Sarabun",
+               "Leelawadee UI", "Segoe UI", Roboto, sans-serif;
+  /* 1.85 — ภาษาไทยมีสระบนและล่าง บรรทัดชิดกว่านี้แล้วสระซ้อนกัน */
+  line-height: 1.85;
+  font-size: 17px;
+  color: var(--ink);
+  background: var(--canvas);
+  -webkit-text-size-adjust: 100%;
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 5rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+h2 {
+  font-size: 1.3rem;
+  line-height: 1.55;
+  margin: 3rem 0 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--liner);
+}
+h2:first-of-type { border-top: none; padding-top: 0; }
+
+p, li { margin: 0.75rem 0; }
+ul { padding-inline-start: 1.4rem; }
+
+.version {
+  color: var(--accent-text);
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+.lede { color: var(--muted); }
+
+/* กล่องข้อความสำคัญ — รูปทรงเดียวกับบล็อก Note ในแอป */
+.note {
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin: 1.5rem 0;
+}
+.note p { margin: 0.4rem 0; }
+.note p:first-child { margin-top: 0; }
+.note p:last-child { margin-bottom: 0; }
+
+.card {
+  background: var(--slot);
+  border: 1px solid var(--liner);
+  border-radius: 12px;
+  padding: 0.25rem 1.1rem;
+  margin: 1.25rem 0;
+}
+
+.steps {
+  margin: 0.75rem 0;
+  padding-inline-start: 1.4rem;
+}
+.steps li { margin: 0.5rem 0; }
+
+a { color: var(--accent-text); }
+
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--liner);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+</style>
+</head>
+<body>
+<main>
+
+<h1>ขอลบบัญชีและข้อมูล</h1>
+<p class="version">แอป: โต๊ะแป้ง (Tohpang) · ผู้พัฒนา: lovepong Studio</p>
+<p class="lede">หน้านี้อธิบายวิธีขอลบบัญชีและข้อมูลของคุณออกจากระบบ ทั้งแบบที่ทำเองได้ทันที
+และแบบที่ต้องติดต่อเรา</p>
+
+<h2>วิธีที่เร็วที่สุด — ลบเองในแอป</h2>
+
+<div class="card">
+<ol class="steps">
+  <li>เปิดแอปโต๊ะแป้ง</li>
+  <li>ไปที่ <strong>ตั้งค่า</strong></li>
+  <li>เลือก <strong>ข้อมูลของฉัน</strong></li>
+  <li>เลือก <strong>ลบบัญชี</strong></li>
+</ol>
+</div>
+
+<p>บัญชีและข้อมูลทั้งหมดที่อยู่บนเซิร์ฟเวอร์จะถูกลบทันที ไม่ต้องรอ ไม่ต้องติดต่อใคร</p>
+
+<h2>ถ้าเข้าแอปไม่ได้แล้ว</h2>
+
+<p>ส่งอีเมลมาที่ <a href="mailto:lovepong@gmail.com">lovepong@gmail.com</a>
+พร้อมระบุอีเมลที่ใช้เข้าระบบ เราจะดำเนินการลบให้ภายใน 30 วัน</p>
+
+<div class="note">
+<p>เราต้องการอีเมลที่ใช้เข้าระบบเพื่อยืนยันว่าเป็นเจ้าของบัญชีจริง
+ถ้าไม่มีข้อมูลนี้เราจะหาบัญชีของคุณไม่เจอ และไม่สามารถลบให้ได้</p>
+</div>
+
+<h2>ข้อมูลอะไรถูกลบบ้าง</h2>
+
+<ul>
+  <li>บัญชีผู้ใช้ และรายการของทั้งหมดที่สำรองไว้บนเซิร์ฟเวอร์</li>
+  <li>ประวัติการใช้งานที่ผูกกับบัญชี</li>
+</ul>
+
+<h2>ข้อมูลอะไรไม่ถูกลบ และทำไม</h2>
+
+<ul>
+  <li><strong>รูปและรายการที่เก็บอยู่ในเครื่องของคุณเอง</strong> — แอปนี้เก็บของส่วนใหญ่
+      ไว้ในเครื่อง ไม่ได้ส่งขึ้นเซิร์ฟเวอร์ เราจึงลบให้จากระยะไกลไม่ได้
+      คุณลบเองได้โดยถอนการติดตั้งแอป หรือล้างข้อมูลแอปในการตั้งค่าของเครื่อง</li>
+  <li><strong>บันทึกการให้ความยินยอม</strong> — เก็บไว้เป็นหลักฐานตามที่กฎหมายคุ้มครอง
+      ข้อมูลส่วนบุคคลกำหนด ในบันทึกนี้ไม่มีเนื้อหาของใช้ส่วนตัวของคุณอยู่เลย
+      มีเพียงข้อมูลว่าให้ความยินยอมเรื่องอะไรเมื่อไร</li>
+</ul>
+
+<footer>
+<p>อัปเดตล่าสุด: 4 กันยายน 2569 ·
+<a href="../">นโยบายความเป็นส่วนตัว</a></p>
+</footer>
+
+</main>
+</body>
+</html>
