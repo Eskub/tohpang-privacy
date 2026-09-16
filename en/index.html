@@ -143,7 +143,7 @@ code { font-size: 0.95em; }
 <main>
 
 <h1>Privacy Policy — Tohpang (โต๊ะแป้ง)</h1>
-<p class="version"><strong>Version en-1.4 · Effective 5 September 2026</strong></p>
+<p class="version"><strong>Version en-1.5 · Effective 16 September 2026</strong></p>
 <div class="note">
   <p><strong>The Thai version is the authoritative one.</strong> This translation exists for the App Store listing and for readers who don't read Thai. If the two ever disagree, the Thai text at <a href="https://eskub.github.io/tohpang-privacy/">https://eskub.github.io/tohpang-privacy/</a> governs.</p>
 </div>
@@ -154,7 +154,7 @@ code { font-size: 0.95em; }
 <thead><tr><th>Question</th><th>Answer</th></tr></thead>
 <tbody>
 <tr><td>Where does my data live</td><td><strong>On your phone</strong>, mainly</td></tr>
-<tr><td>Are my photos uploaded</td><td><strong>Never, under any circumstances</strong></td></tr>
+<tr><td>Are my photos stored on the server</td><td><strong>No</strong> — label photos sent for AI reading are read and not kept (see section 4); every other photo stays on your phone</td></tr>
 <tr><td>Do I need an account</td><td><strong>No</strong> — it works immediately, with nothing to fill in</td></tr>
 <tr><td>Are there ads</td><td><strong>No</strong>, and there is no advertising SDK anywhere in the app</td></tr>
 <tr><td>Is my behaviour tracked</td><td>Statistics only if you switch them on · crash reports carry only the failing code, no personal content</td></tr>
@@ -164,12 +164,15 @@ code { font-size: 0.95em; }
 <h2>1. Who holds your data</h2>
 <p><strong>Data controller</strong><br>lovepong Studio<br>402/164 Moo 4, Nong Phueng, Saraphi, Chiang Mai 50140, Thailand<br>Email <strong><a href="mailto:lovepong@gmail.com">lovepong@gmail.com</a></strong></p>
 <h2>2. Stays on your phone — we never see it</h2>
-<p>These are stored in your phone's own storage and <strong>are never sent anywhere</strong>:</p>
+<p>These are stored in your phone's own storage and <strong>are never sent to our servers</strong>:</p>
 <ul>
   <li><strong>Every product photo you take</strong>, and diary photos</li>
   <li>Expiry reminders</li>
   <li>App settings</li>
 </ul>
+<blockquote>
+<p>📌 <strong>There is exactly one way a photo leaves your phone, and you trigger it.</strong> If you tap share on a product card, the app composes that item's photo into a single image and hands it to <strong>your system's share sheet</strong>, so you choose where it goes. That image <strong>never passes through our servers</strong> — but once you send it, it lives with whichever app you chose, which is outside our control.</p>
+</blockquote>
 <div class="note">
   <p><strong>A consequence you should know:</strong> because photos are never backed up anywhere, <strong>deleting the app or changing phones loses them permanently</strong> — even if you linked a Google account. We chose it this way because photos taken inside your home should not sit on anyone's server.</p>
 </div>
@@ -182,7 +185,7 @@ code { font-size: 0.95em; }
 </ul>
 <h2>3. What reaches our server</h2>
 <p>If you <strong>don't link an account</strong>, <strong>your collection and all photos stay on your phone only</strong> — not a single item is uploaded.</p>
-<p>Four things do reach the server even before you link an account, tied to an</p>
+<p>Five things do reach the server even before you link an account, tied to an</p>
 <p><strong>anonymous user id</strong> the system generates on first launch. That id has no name, no email, and we have no way to tell whose it is:</p>
 <div class="table-wrap">
 <table>
@@ -192,6 +195,7 @@ code { font-size: 0.95em; }
 <tr><td>A record that a deal link was tapped (which store, which product, when)</td><td>When you tap a recommendation card</td></tr>
 <tr><td>A counter of how many times AI label reading was used</td><td>When you ask AI to read a label — it exists to stop costs running away</td></tr>
 <tr><td>A record of which barcode entries you contributed to the shared catalogue</td><td>When you scan a barcode the system doesn't recognise yet (see section 4)</td></tr>
+<tr><td><strong>A report that product data is wrong</strong> — which field you flagged, <strong>any text you typed yourself</strong>, and the name/brand/category/FDA number you were looking at</td><td>When you tap "Report wrong data" on a product page — see section 4.1</td></tr>
 </tbody></table></div>
 <p>When you link a Google account so your data survives a phone change, we additionally store:</p>
 <div class="table-wrap">
@@ -213,6 +217,7 @@ code { font-size: 0.95em; }
 <tr><td><strong>Records of tapped shopping links</strong></td><td><strong>30 days</strong>, then deleted automatically every day</td><td>Used only to reconcile with the store, and stores themselves only look back 7 days</td></tr>
 <tr><td><strong>Usage statistics you consented to</strong></td><td><strong>12 months</strong>, then deleted automatically</td><td>Used to work out how long an average item in a category lasts, which needs a full year of data to avoid seasonal distortion</td></tr>
 <tr><td><strong>Consent and withdrawal records</strong></td><td>Kept indefinitely</td><td>The law requires us to be able to prove what you consented to and when</td></tr>
+<tr><td><strong>Reports that product data is wrong</strong> (including text you typed)</td><td><strong>180 days</strong>, then deleted automatically</td><td>Used to check and correct the shared catalogue — past that it has either been fixed or never will be</td></tr>
 <tr><td><strong>Crash reports</strong></td><td>As set by the provider (at most 90 days)</td><td>Used to find out why the app broke</td></tr>
 </tbody></table></div>
 <p>Automatic deletion <strong>runs every day without anyone triggering it</strong> — it is not deletion-when-we-remember.</p>
@@ -235,6 +240,15 @@ code { font-size: 0.95em; }
   <li>We do, however, <strong>keep a separate record</strong> of which barcodes your anonymous user id has submitted. That record is not visible to other users; it exists so we can <strong>trace deliberately false entries</strong>, which would damage the catalogue everyone shares.</li>
   <li><strong>If the barcode can't be scanned, no photo is sent anywhere.</strong> The app reads the text on your device instead.</li>
 </ul>
+<h2>4.1 When you report that product data is wrong</h2>
+<p>Each product page has a <strong>"Report wrong data"</strong> button for telling us that the name, brand, category, FDA number, price or photo doesn't match the real product.</p>
+<ul>
+  <li><strong>What reaches the server</strong>: which field you flagged · <strong>any text you typed yourself</strong> (optional, up to 1,000 characters) · and a <strong>snapshot of what you were looking at</strong> (product name, brand, category, FDA number), so we can see what you saw when you reported it.</li>
+  <li>Tied to your <strong>anonymous user id</strong>, to stop repeat spamming (10 reports a day) and so you can look back at your own reports.</li>
+  <li><strong>Other users cannot see your reports</strong> — only you and the administrator can.</li>
+  <li><strong>Kept for 180 days</strong>, then deleted automatically.</li>
+  <li>⚠️ <strong>Please don't type personal details into the text box.</strong> It is there to describe what is wrong with the product data. We don't want your name, phone number or address, and none of that should end up in there.</li>
+</ul>
 <h2>5. Usage statistics — only if you say yes</h2>
 <p>We record usage statistics <strong>only if you switch them on</strong>, and you can switch them off at any time in Settings.</p>
 <ul>
@@ -242,7 +256,7 @@ code { font-size: 0.95em; }
   <li><strong>Never recorded</strong>: full product names, prices you entered, private notes, or photo file paths.</li>
   <li><strong>Kept for 12 months</strong>, then deleted automatically.</li>
 </ul>
-<p>Used only to work out an average — "how many days does an item in this category last for people in general" — and nothing else.</p>
+<p>Used for two things: working out an average — "how many days does an item in this category last for people in general" — so we can recommend things that suit you, and seeing which screens are hard enough to use that people give up part-way, so we can improve the app.</p>
 <h2>6. Shopping links (affiliate)</h2>
 <p>This app carries <strong>no advertising</strong>. Its income comes from shopping links — if you tap one and buy something, we may receive a share from the store, <strong>at no extra cost to you whatsoever</strong>.</p>
 <ul>
@@ -291,7 +305,7 @@ code { font-size: 0.95em; }
 <p>This document covers <strong>personal data only</strong>. Everything else we've agreed — copyright in the photos you take, limits of liability, and the data the app shows but does not itself verify — is in the <a href="../terms/">Terms of Use</a>.</p>
 <h2>11. When this policy changes</h2>
 <p>Whenever we change anything that affects your rights, we bump the version number and tell you in the app before asking for consent again. Every past revision is visible in this file's history on GitHub.</p>
-<p><strong>Current version: en-1.4</strong> (matches Thai <strong>th-1.4</strong>)</p>
+<p><strong>Current version: en-1.5</strong> (matches Thai <strong>th-1.5</strong>)</p>
 
 </main>
 </body>
